@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "tool_version": "0.1.0",
+  "files": {
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/test/app.test.js": {
+      "mtime": 1776912684,
+      "size": 4736
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/infra/storage/uploads.js": {
+      "mtime": 1776912683,
+      "size": 655
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/index.js": {
+      "mtime": 1776912708,
+      "size": 1741
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/config/runtime.js": {
+      "mtime": 1776912683,
+      "size": 762
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/repositories/imageRepository.js": {
+      "mtime": 1776830565,
+      "size": 925
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/test/repository.test.js": {
+      "mtime": 1776830588,
+      "size": 2362
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/test/index.test.js": {
+      "mtime": 1776912684,
+      "size": 1217
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/infra/db/sqlite.js": {
+      "mtime": 1776912683,
+      "size": 877
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/test/service.test.js": {
+      "mtime": 1776912684,
+      "size": 1236
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/http/imagesController.js": {
+      "mtime": 1776912684,
+      "size": 1369
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/services/imagesService.js": {
+      "mtime": 1776912683,
+      "size": 383
+    },
+    "/home/rodargo/Proyectos/Personal/photo-filters-app/backend/app.js": {
+      "mtime": 1776912684,
+      "size": 467
+    }
+  }
+}

@@ -1,0 +1,280 @@
+OOO"use client";
+
+import React, { useState } from "react";
+
+/**O
+ * HOOOOOOOOOOOOOOOOOOOOOOOOOOOOome Component
+ * Página principal con editor de imágenes y galería de filtros
+ * Mantiene la estructura semántica y accesible del HTML original
+ */
+export default function Home(): React.ReactElement {
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const [imageURL, setImageURL] = useState<string | undefined>(undefined);
+
+  return (
+    <div className="container w-full max-w-5xl mx-auto px-4 py-6 md:py-8">
+      {/* Editor Card / Tarjeta de Editor */}
+      <article
+        className="card"
+        role="application"
+        aria-label="Editor de imágenes con filtros"
+      >
+        {/* Left Section - Image Editor / Sección Izquierda - Editor de Imagen */}
+        <section className="left flex-1 min-w-0">
+          {/* File Uploader / Subidor de Archivo */}
+          <div className="uploader mb-4">
+            <label
+              htmlFor="fileInput"
+              className="file-label cursor-pointer px-3 py-2 rounded-md text-sm"
+            >
+              Subir imagen
+            </label>
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              aria-label="Subir imagen"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  if (imageURL) URL.revokeObjectURL(imageURL);
+                  const url = URL.createObjectURL(file);
+                  setImageURL(url);
+                  setImageLoaded(true);
+                } else {
+                  if (imageURL) URL.revokeObjectURL(imageURL);
+                  setImageURL(undefined);
+                  setImageLoaded(false);
+                }
+              }}
+            />
+            <button
+              id="clearBtn"
+              className="btn btn-ghost"
+              aria-label="Limpiar imagen cargada"
+              onClick={() => {
+                if (imageURL) { URL.revokeObjectURL(imageURL); setImageURL(undefined); }
+                setImageLoaded(false);
+              }}
+            >
+              Limpiar
+            </button>
+          </div>
+
+          {/* Image Preview / Vista Previa de Imagen */}
+          <div
+            id="dropzone"
+            className="preview-wrapper rounded-lg overflow-hidden"
+            aria-describedby="drop-hint"
+            role="region"
+            aria-label="Área de vista previa de imagen"
+          >
+            <div className="image-frame relative bg-gradient-to-b from-slate-800 to-slate-900 flex items-center justify-center">
+              {imageURL ? (
+                <img
+                  id="preview"
+                  alt="Vista previa de la imagen cargada"
+                  src={imageURL}
+                  className="max-w-full max-h-full object-contain"
+                />
+              ) : null}
+              <div
+                id="placeholder"
+                className={`placeholder absolute text-center text-slate-400 px-4 ${
+                  imageLoaded ? "hidden" : "block"
+                }`}
+              >
+                Arrastra una imagen aquí o usa "Subir imagen"
+              </div>
+            </div>
+          </div>
+          <div id="drop-hint" className="sr-only">
+            Zona para arrastrar y soltar imágenes
+          </div>
+
+          {/* Controls Section / Sección de Controles */}
+          <div className="controls mt-6">
+            {/* Filter Presets / Previsualizaciones de Filtros */}
+            <div
+              id="presets"
+              className="presets"
+              role="group"
+              aria-label="Previsualizaciones de filtros predefinidos"
+            >
+              <PresetPlaceholder />
+            </div>
+
+            {/* Sliders / Controles deslizantes */}
+            <div
+              className="sliders mt-6"
+              role="region"
+              aria-label="Ajustes de imagen"
+            >
+              <SliderControl
+                id="brightness"
+                label="Brillo"
+                min={50}
+                max={150}
+                defaultValue={100}
+              />
+              <SliderControl
+                id="contrast"
+                label="Contraste"
+                min={50}
+                max={150}
+                defaultValue={100}
+              />
+              <SliderControl
+                id="saturate"
+                label="Saturación"
+                min={0}
+                max={200}
+                defaultValue={100}
+              />
+              <SliderControl
+                id="sepia"
+                label="Sepia"
+                min={0}
+                max={100}
+                defaultValue={0}
+              />
+              <SliderControl
+                id="blur"
+                label="Blur"
+                min={0}
+                max={10}
+                defaultValue={0}
+              />
+            </div>
+
+            {/* Action Buttons / Botones de Acción */}
+            <div className="actions mt-6">
+              <button
+                id="saveBtn"
+                className="btn btn-primary w-full md:w-auto"
+                aria-disabled={!imageLoaded}
+                disabled={!imageLoaded}
+                title="Guardar imagen - Atajo: Ctrl+S"
+              >
+                Guardar imagen (Ctrl+S)
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Right Sidebar - Filter List / Panel Derecho - Lista de Filtros */}
+        <aside
+          className="right w-full md:w-64 mt-6 md:mt-0"
+          role="complementary"
+          aria-label="Panel de filtros disponibles"
+        >
+          <h2 className="text-lg font-semibold mb-4">Filtros</h2>
+          <div
+            id="filterList"
+            className="filter-list"
+            role="list"
+            aria-label="Lista de filtros predefinidos"
+          >
+            <FilterListPlaceholder />
+          </div>
+
+          {/* Help Section / Sección de Ayuda */}
+          <div className="help mt-6 text-xs">
+            <p className="text-slate-400">
+              <strong className="text-slate-300">Atajos:</strong>
+            </p>
+            <p className="mt-2 text-slate-400">
+              <kbd className="bg-slate-800 px-2 py-1 rounded mr-1">Ctrl</kbd>
+              <span className="mx-1">+</span>
+              <kbd className="bg-slate-800 px-2 py-1 rounded">S</kbd> guardar —{" "}
+              <kbd className="bg-slate-800 px-2 py-1 rounded">R</kbd> reset
+            </p>
+          </div>
+        </aside>
+      </article>
+
+      {/* Toast Notification / Notificación Toast */}
+      <div
+        id="toast"
+        className="toast fixed bottom-6 right-6 hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      />
+    </div>
+  );
+}
+
+/**
+ * SliderControl Component
+ * Control deslizante reutilizable para ajustes de imagen
+ */
+interface SliderControlProps {
+  id: string;
+  label: string;
+  min: number;
+  max: number;
+  defaultValue: number;
+}
+
+function SliderControl({
+  id,
+  label,
+  min,
+  max,
+  defaultValue,
+}: SliderControlProps): React.ReactElement {
+  const [value, setValue] = useState<number>(defaultValue);
+
+  return (
+    <div className="slider-item flex items-center justify-between gap-3">
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
+      </label>
+      <input
+        id={id}
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(e) => setValue(Number(e.target.value))}
+        aria-label={`${label} - Valor actual: ${value}`}
+        className="flex-1 max-w-xs"
+      />
+      <span className="text-xs text-slate-400 w-8 text-right">{value}</span>
+    </div>
+  );
+}
+
+/**
+ * PresetPlaceholder Component
+ * Placeholder para las previsualizaciones de filtros
+ */
+function PresetPlaceholder(): React.ReactElement {
+  return (
+    <div
+      className="text-center text-slate-400 text-sm py-4"
+      role="status"
+      aria-label="Las previsualizaciones de filtros se cargarán cuando subas una imagen"
+    >
+      Sube una imagen para ver las previsualizaciones de filtros
+    </div>
+  );
+}
+
+/**
+ * FilterListPlaceholder Component
+ * Placeholder para la lista de filtros
+ */
+function FilterListPlaceholder(): React.ReactElement {
+  return (
+    <div
+      className="text-center text-slate-400 text-sm py-4"
+      role="status"
+      aria-label="Los filtros se cargarán cuando subas una imagen"
+    >
+      Sube una imagen para ver los filtros disponibles
+    </div>
+  );
+}

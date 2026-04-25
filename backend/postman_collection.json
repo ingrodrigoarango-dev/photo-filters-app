@@ -1,0 +1,86 @@
+{
+  "info": {
+    "name": "Photo Filters API",
+    "_postman_id": "photo-filters-api",
+    "description": "Colección para probar endpoints de backend (subir y listar imágenes)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Upload Image",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": ""
+            },
+            {
+              "key": "filter",
+              "type": "text",
+              "value": "Vintage"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/images",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "images"
+          ]
+        },
+        "description": "Enviar multipart/form-data con el campo 'image' (tipo file) y opcional 'filter' (texto)."
+      },
+      "response": [
+        {
+          "name": "Success",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "body": "{\"message\":\"Imagen guardada correctamente\",\"id\":42,\"url\":\"http://localhost:8080/uploads/stored.png\"}"
+        }
+      ]
+    },
+    {
+      "name": "List Images",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/images",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "images"
+          ]
+        },
+        "description": "Devuelve lista de imágenes con campo 'url' público."
+      },
+      "response": [
+        {
+          "name": "Success",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "body": "[{\"id\":1,\"filename\":\"first.png\",\"originalName\":\"first.png\",\"filterUsed\":\"Vintage\",\"url\":\"http://localhost:8080/uploads/first.png\"}]"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
